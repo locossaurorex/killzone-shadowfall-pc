@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <fstream>
 #include <map>
+#include <string>
 #ifdef _WIN32
 #include <windows.h>
 #include <psapi.h>
@@ -1084,13 +1085,26 @@ void PipelineCache::WarmUp(const std::function<void(u32, u32, const char*)>& pro
     }
     // gow3: peak memory of the whole process (runtime and driver included), to judge whether
     // GOW3_PRECOMPILE fits on smaller PCs.
+    double peak_mib = 0.0;
+#ifdef _WIN32
     PROCESS_MEMORY_COUNTERS memory{.cb = sizeof(memory)};
     K32GetProcessMemoryInfo(GetCurrentProcess(), &memory, sizeof(memory));
+    peak_mib = memory.PeakWorkingSetSize / 1048576.0;
+#else
+    std::ifstream status("/proc/self/status");
+    std::string line;
+    while (std::getline(status, line)) {
+        if (line.rfind("VmHWM:", 0) == 0) {
+            peak_mib = std::strtod(line.c_str() + 6, nullptr) / 1024.0;
+            break;
+        }
+    }
+#endif
     std::printf("Pipeline warm-up: %u of %u pipelines in %.2f s (%u threads), peak process memory "
                 "%.0f MiB\n",
                 num_pipelines, num_total_pipelines,
                 std::chrono::duration<double>(std::chrono::steady_clock::now() - started).count(),
-                warmup_threads, memory.PeakWorkingSetSize / 1048576.0);
+                warmup_threads, peak_mib);
     LOG_INFO(Render, "Preloaded {} pipelines", num_pipelines);
     ReportPipelineBinaryCache();
     if (num_total_pipelines > num_pipelines) {
