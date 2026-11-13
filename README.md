@@ -22,9 +22,9 @@
 > ❤️ The ports are and will stay **free**. If you want to help, a PayPal donation is welcome but
 > completely optional.
 
-Native Windows port of **Killzone Shadow Fall** (PS4). The game's code runs directly on your CPU;
-graphics are translated to Vulkan in real time. **Public beta:** the whole campaign is playable,
-and it keeps improving with every report.
+Native **Windows and Linux** port of **Killzone Shadow Fall** (PS4). The game's code runs directly on
+your CPU; graphics are translated to Vulkan in real time. **Public beta:** the whole campaign is
+playable, and it keeps improving with every report.
 
 > 🆕 **0.8.0:** 🌐 **multiplayer is back (beta)**: play with your friends over Radmin VPN, without the
 > official servers · 🧭 new **Multiplayer** page in the launcher · 🏅 everything unlocked in multiplayer.
@@ -46,11 +46,12 @@ and it keeps improving with every report.
 | | Minimum / recommended |
 |---|---|
 | 🪟 System | Windows 10 (1903+) or 11, 64-bit |
+| 🐧 Linux | x86-64 · Vulkan 1.3 · native build (beta), see [Linux](#-linux-and-steam-deck) |
 | 🎮 GPU | Vulkan 1.3 · **4-6 GB VRAM** for 1080p-1440p, **8 GB** for 1800p and 4K |
 | 🧠 RAM | 16 GB |
 | ✅ Tested on | Ryzen 7 5700 + RTX 2060 Super (8 GB): playable from start to finish |
 
-Not tested yet on AMD GPUs or Intel CPUs: reports are very welcome.
+Tested on AMD (Radeon RX 6800 XT) under Linux. Not tested yet on Intel CPUs: reports are very welcome.
 
 ## 🎮 Controls
 
@@ -338,14 +339,28 @@ keyboard, mouse and controller mapping · FOV · quick links to saves, screensho
 - **Version 01.81 is required** in every region (base game or its update).
 - Saves are shared between regions: switching keeps them. No folder renaming or `param.sfo` edits.
 
-## 🐧 Linux and Steam Deck (Proton, not tested by us)
+## 🐧 Linux and Steam Deck
 
-1. Add **Killzone Shadow Fall.exe** to Steam as a *non-Steam game*.
-2. *Properties → Compatibility*: force Proton Experimental or GE-Proton.
-3. Start it from Steam, choose your dump's folder and press **PLAY**.
+**Native Linux build (beta).** The port compiles and runs natively on Linux (x86-64, Vulkan 1.3): the
+PS4 code runs on your CPU and graphics are translated to Vulkan, as on Windows. A packaged AppImage
+is not published yet, so for now build it from source:
 
-Reports (distro or Steam Deck, Proton version, GPU) are welcome on Discord or in
-[issues](../../issues). A native Linux version (AppImage) will come once the game is fully stable.
+```bash
+# Debian/Ubuntu 24.04: build tools + newer SDL3, Vulkan-Headers 1.4 and VMA (the distro's are too old).
+# packaging/linux/ci-deps.sh installs everything and builds those three into /usr/local.
+git submodule update --init --recursive
+bash build.sh
+```
+
+Then start it pointing at your dump (the folder with `eboot.bin`; if your base game and the 01.81
+update are separate folders, point `GOW3_PATCH_DIR` at the update):
+
+```bash
+GOW3_GAME_DIR=/path/to/CUSA00190 GOW3_PATCH_DIR=/path/to/CUSA00190-update bash run.sh
+```
+
+On Steam Deck the same source build works; the Windows build through Proton also works. Reports
+(distro, GPU, driver) are welcome on Discord or in [issues](../../issues).
 
 ## ⚠️ Known issues
 
@@ -378,7 +393,7 @@ Reports (distro or Steam Deck, Proton version, GPU) are welcome on Discord or in
 
 **Later**
 - In-game menu in Spanish.
-- Native Linux version (AppImage), with Steam Deck in mind, once the game is fully stable.
+- Native Linux build works today (see [Linux](#-linux-and-steam-deck)); a packaged AppImage for Steam Deck is still to come.
 
 ## 🐞 Reporting bugs
 
@@ -394,6 +409,10 @@ As in the gow3_pc base ([instructions](packaging/windows/README.md)): MSYS2 CLAN
 `packaging/windows/make_kzsf_icon.py <your dump>/sce_sys/icon0.png launcher/kzsf.ico`). For DLSS,
 build the bridge first with Visual Studio 2022 and the [NVIDIA DLSS SDK](https://github.com/NVIDIA/DLSS):
 `DLSS_SDK_ROOT=<checkout> bash packaging/windows/build_dlss_kzsf.sh`.
+
+On Linux (Debian/Ubuntu 24.04): `bash packaging/linux/ci-deps.sh` (builds SDL3, Vulkan-Headers 1.4 and
+VMA into `/usr/local`), then `bash build.sh`; run with `GOW3_GAME_DIR=... bash run.sh` — see
+[Linux](#-linux-and-steam-deck).
 
 ---
 
@@ -411,9 +430,9 @@ build the bridge first with Visual Studio 2022 and the [NVIDIA DLSS SDK](https:/
 > ❤️ Los ports son y seguirán siendo **gratuitos**. Si querés ayudar, una donación por PayPal se
 > agradece, pero es totalmente opcional.
 
-Port nativo para Windows de **Killzone Shadow Fall** (PS4). El código del juego corre directamente
-en tu CPU; los gráficos se traducen a Vulkan en tiempo real. **Beta pública:** se puede jugar la
-campaña completa, y mejora con cada reporte.
+Port nativo para **Windows y Linux** de **Killzone Shadow Fall** (PS4). El código del juego corre
+directamente en tu CPU; los gráficos se traducen a Vulkan en tiempo real. **Beta pública:** se puede
+jugar la campaña completa, y mejora con cada reporte.
 
 > 🆕 **0.8.0:** 🌐 **vuelve el multijugador (beta)**: jugá con tus amigos por Radmin VPN, sin los
 > servidores oficiales · 🧭 página nueva **Multijugador** en el launcher · 🏅 todo desbloqueado en multijugador.
@@ -436,11 +455,12 @@ campaña completa, y mejora con cada reporte.
 | | Mínimo / recomendado |
 |---|---|
 | 🪟 Sistema | Windows 10 (1903+) u 11 de 64 bits |
+| 🐧 Linux | x86-64 · Vulkan 1.3 · build nativo (beta), ver [Linux](#-linux-y-steam-deck) |
 | 🎮 GPU | Vulkan 1.3 · **4-6 GB de VRAM** para 1080p-1440p, **8 GB** para 1800p y 4K |
 | 🧠 RAM | 16 GB |
 | ✅ Probado en | Ryzen 7 5700 + RTX 2060 Super (8 GB): se juega completo de principio a fin |
 
-Todavía no fue probado en gráficas AMD ni en procesadores Intel: los reportes se agradecen mucho.
+Probado en AMD (Radeon RX 6800 XT) bajo Linux. Todavía no fue probado en procesadores Intel: los reportes se agradecen mucho.
 
 ## 🎮 Controles
 
@@ -734,15 +754,28 @@ partidas, capturas y logs.
 - **Es obligatoria la versión 01.81** en cualquier región (juego base o su actualización).
 - Las partidas se comparten entre regiones. No hace falta renombrar carpetas ni editar `param.sfo`.
 
-## 🐧 Linux y Steam Deck (Proton, no probado por nosotros)
+## 🐧 Linux y Steam Deck
 
-1. Agregá **Killzone Shadow Fall.exe** a Steam como *juego que no es de Steam*.
-2. *Propiedades → Compatibilidad*: forzá Proton Experimental o GE-Proton.
-3. Abrilo desde Steam, elegí la carpeta de tu dump y dale a **JUGAR**.
+**Build nativo para Linux (beta).** El port compila y corre nativamente en Linux (x86-64, Vulkan 1.3):
+el código del PS4 corre en tu CPU y los gráficos se traducen a Vulkan, igual que en Windows. Todavía no
+hay un AppImage empaquetado, así que por ahora se compila desde el código:
 
-Se agradecen reportes (distro o Steam Deck, versión de Proton, GPU) en el Discord o en
-[issues](../../issues). Cuando el juego esté 100% estable va a salir una versión nativa para
-Linux (AppImage).
+```bash
+# Debian/Ubuntu 24.04: herramientas + SDL3, Vulkan-Headers 1.4 y VMA más nuevos (los del distro son viejos).
+# packaging/linux/ci-deps.sh instala todo y compila esos tres en /usr/local.
+git submodule update --init --recursive
+bash build.sh
+```
+
+Después abrilo apuntando a tu dump (la carpeta con `eboot.bin`; si el juego base y la actualización
+01.81 están en carpetas separadas, apuntá `GOW3_PATCH_DIR` a la actualización):
+
+```bash
+GOW3_GAME_DIR=/ruta/a/CUSA00190 GOW3_PATCH_DIR=/ruta/a/CUSA00190-update bash run.sh
+```
+
+En Steam Deck funciona el mismo build desde el código; el build de Windows por Proton también. Se
+agradecen reportes (distro, GPU, driver) en el Discord o en [issues](../../issues).
 
 ## ⚠️ Problemas conocidos
 
@@ -777,7 +810,7 @@ issues corregidos.
 
 **Más adelante**
 - Menú dentro del juego en español.
-- Versión nativa para Linux (AppImage), pensando en Steam Deck, cuando el juego esté 100% estable.
+- El build nativo para Linux ya funciona (ver [Linux](#-linux-y-steam-deck)); falta el AppImage empaquetado para Steam Deck.
 
 ## 🐞 Reportar errores
 
@@ -793,6 +826,10 @@ Igual que la base gow3_pc ([instrucciones](packaging/windows/README.md)): MSYS2 
 `packaging/windows/make_kzsf_icon.py <tu dump>/sce_sys/icon0.png launcher/kzsf.ico`). Para DLSS,
 compilá antes el puente con Visual Studio 2022 y el [SDK de NVIDIA DLSS](https://github.com/NVIDIA/DLSS):
 `DLSS_SDK_ROOT=<checkout> bash packaging/windows/build_dlss_kzsf.sh`.
+
+En Linux (Debian/Ubuntu 24.04): `bash packaging/linux/ci-deps.sh` (compila SDL3, Vulkan-Headers 1.4 y
+VMA en `/usr/local`), después `bash build.sh`; corré con `GOW3_GAME_DIR=... bash run.sh` — ver
+[Linux](#-linux-y-steam-deck).
 
 ---
 
