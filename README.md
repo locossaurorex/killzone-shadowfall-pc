@@ -352,6 +352,9 @@ git submodule update --init --recursive
 bash build.sh
 ```
 
+To bundle it as an AppImage: `bash packaging/linux/build.sh` (needs
+`python3 -m pip install pyinstaller iced-x86==1.21.0`).
+
 Then start it pointing at your dump (the folder with `eboot.bin`; if your base game and the 01.81
 update are separate folders, point `GOW3_PATCH_DIR` at the update):
 
@@ -766,6 +769,9 @@ hay un AppImage empaquetado, así que por ahora se compila desde el código:
 git submodule update --init --recursive
 bash build.sh
 ```
+
+Para empaquetarlo como AppImage: `bash packaging/linux/build.sh` (necesita
+`python3 -m pip install pyinstaller iced-x86==1.21.0`).
 
 Después abrilo apuntando a tu dump (la carpeta con `eboot.bin`; si el juego base y la actualización
 01.81 están en carpetas separadas, apuntá `GOW3_PATCH_DIR` a la actualización):
